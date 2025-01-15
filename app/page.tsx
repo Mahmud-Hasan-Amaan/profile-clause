@@ -1,101 +1,380 @@
+"use client";
+
+import { FileText, Clock, Phone } from "lucide-react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ChevronLeft } from "lucide-react";
+import { scroller } from "react-scroll";
+import { profileData } from "./data/profile";
+import BookingForm from "./components/select-service";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useState, Suspense, useEffect } from "react";
+import StudentFeedback from "./components/student-feedback";
+import FeedbackSkeleton from "./components/feedback-skeleton";
+import ProfileSkeleton from "./components/profile-skeleton";
+import ServicesSkeleton from "./components/services-skeleton";
+import OverviewSkeleton from "../components/overview-skeleton";
+import EducationSkeleton from "../components/education-skeleton";
+import ExperienceSkeleton from "../components/experience-skeleton";
+import DocumentsSkeleton from "../components/documents-skeleton";
 
-export default function Home() {
+export default function ProfilePage() {
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate data loading
+    setTimeout(() => setIsLoading(false), 1000);
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    scroller.scrollTo(sectionId, {
+      duration: 800,
+      delay: 0,
+      smooth: "easeInOutQuart",
+      offset: -200,
+    });
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+      <div className="sticky top-0 bg-white z-10 pt-4">
+        <button className="flex items-center gap-1.5 text-[13px] mb-8 text-[#64748B]">
+          <ChevronLeft className="w-4 h-4" />
+          Back
+        </button>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        {isLoading ? (
+          <ProfileSkeleton />
+        ) : (
+          <div className="flex flex-col md:flex-row items-start justify-between gap-4 mb-6">
+            <div className="flex md:items-center gap-4">
+              <div className="relative w-20 md:w-[100px] flex-shrink-0">
+                <Image
+                  src={profileData.avatar || "/placeholder.svg"}
+                  alt="Profile picture"
+                  width={100}
+                  height={100}
+                  className="rounded-full w-full h-auto"
+                />
+                <div
+                  className={`absolute bottom-0 right-0 w-6 h-6 md:w-8 md:h-8 border-2 border-white rounded-full ${
+                    profileData.availability.status === "online"
+                      ? "bg-[#22C55E]"
+                      : "bg-[#94A3B8]"
+                  }`}
+                />
+              </div>
+
+              <div className="flex-shrink">
+                <div className="flex items-center gap-2 mb-2">
+                  <h1 className="text-[15px] md:text-[17px] font-medium text-blue-950 truncate">
+                    {profileData.name}
+                  </h1>
+                  <Image
+                    src={profileData.country.flagUrl || "/placeholder.svg"}
+                    alt={`${profileData.country.name} flag`}
+                    width={24}
+                    height={24}
+                    className="rounded-sm flex-shrink-0"
+                  />
+                </div>
+                <p className="text-[12px] md:text-[20x] text-black mb-2">
+                  {profileData.available}
+                </p>
+                <p className="text-[12px] md:text-[13px] text-[#94A3B8]">
+                  {profileData.role} @ {profileData.company}
+                </p>
+              </div>
+            </div>
+
+            <div className="w-full md:w-auto md:min-w-[320px] p-3 md:p-4 space-y-3 md:space-y-4 border border-[#E2E8F0] rounded-lg">
+              <div className="flex items-center gap-2">
+                <div className="flex-1">
+                  <h3 className="text-[13px] md:text-sm font-medium leading-none mb-1 text-blue-950">
+                    Available Tuesday at 22:30 GMT +5
+                  </h3>
+                  <p className="text-[12px] md:text-sm text-muted-foreground ">
+                    Usually responds within 15 mins
+                  </p>
+                </div>
+                <div className="h-2 w-2 rounded-full bg-green-500" />
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1 h-8 md:h-9 text-[12px] md:text-[13px]"
+                >
+                  Message
+                </Button>
+                <Button className="flex-1 h-8 md:h-9 text-[12px] md:text-[13px] bg-blue-950">
+                  Select Services
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex overflow-x-auto border-b border-[#E2E8F0] mb-8 hide-scrollbar">
+          {[
+            { name: "Overview", id: "overview" },
+            { name: "Services", id: "services" },
+            { name: "Education", id: "education" },
+            { name: "Experience", id: "experience" },
+            { name: "Reviews", id: "reviews" },
+          ].map((item, index) => (
+            <button
+              key={item.name}
+              onClick={() => scrollToSection(item.id)}
+              className={`px-4 py-2.5 text-[13px] ${
+                index === 0
+                  ? "text-[#0F172A] border-b-2 border-[#0F172A] font-medium"
+                  : "text-[#64748B] hover:text-[#0F172A]"
+              }`}
+            >
+              {item.name}
+            </button>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </div>
+
+      <div className="pt-4">
+        <div
+          id="overview"
+          className="border border-[#E2E8F0] rounded-lg p-6 mb-8"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          {isLoading ? (
+            <OverviewSkeleton />
+          ) : (
+            <div className="mb-0">
+              <h2 className="text-[15px] font-medium text-blue-950 mb-3">
+                Bio
+              </h2>
+              <p className="text-[13px] text-[#64748B] mb-2 leading-[1.6]">
+                Our team will review your application and get back to you within
+                1-3 business days. If approved, you&apos;ll gain access to your
+                dashboard
+              </p>
+              <button className="text-[13px] text-[#2563EB] hover:text-[#1D4ED8]">
+                Read more
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div
+          id="services"
+          className="border border-[#E2E8F0] rounded-lg p-4 sm:p-6 mb-8"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <h2 className="text-[15px] font-medium text-blue-950 mb-6">
+            Services
+          </h2>
+          {isLoading ? (
+            <ServicesSkeleton />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {[
+                {
+                  icon: <FileText className="w-6 h-6 text-yellow-500" />,
+                  title: "Essay Review",
+                  price: "$15",
+                  description: "Lorem ipsum dolor sit amet consectetur.",
+                  iconBg: "bg-blue-50",
+                },
+                {
+                  icon: <Clock className="w-6 h-6 text-green-500" />,
+                  title: "1 Hour Session",
+                  price: "$15",
+                  description: "Lorem ipsum dolor sit amet consectetur.",
+                  iconBg: "bg-green-50",
+                },
+                {
+                  icon: <Phone className="w-6 h-6 text-blue-500" />,
+                  title: "15 mins Introductory Call",
+                  price: "Free",
+                  description: "Lorem ipsum dolor sit amet consectetur.",
+                  iconBg: "bg-purple-50",
+                },
+              ].map((service) => (
+                <Card key={service.title} className="p-6">
+                  <div className="flex flex-col gap-4">
+                    <div
+                      className={`w-12 h-12 rounded-lg ${service.iconBg} flex items-center justify-center`}
+                    >
+                      <span className="text-2xl">{service.icon}</span>
+                    </div>
+                    <h3 className="text-xl font-medium text-blue-950">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-500">{service.description}</p>
+                    <div className="mt-auto">
+                      <div className="mb-4">
+                        <div className="text-sm text-gray-500">Price</div>
+                        <div className="text-2xl font-medium">
+                          {service.price}
+                        </div>
+                      </div>
+                      <div className="flex gap-4">
+                        <Button
+                          variant="outline"
+                          className="flex-1 rounded-full"
+                        >
+                          View Packages
+                        </Button>
+                        <Button
+                          className="flex-1 rounded-full bg-blue-950 hover:bg-blue-950/90"
+                          onClick={() => setIsBookingOpen(true)}
+                        >
+                          Select Service
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div
+          id="education"
+          className="border border-[#E2E8F0] rounded-lg p-6 mb-8"
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          {isLoading ? (
+            <EducationSkeleton />
+          ) : (
+            <>
+              <h2 className="text-[15px] font-medium text-blue-950 mb-6">
+                Education
+              </h2>
+              <div className="space-y-6">
+                {profileData.education.map((edu, index) => (
+                  <div
+                    key={index}
+                    className="flex gap-4 border-b border-[#E2E8F0] pb-4"
+                  >
+                    <div className="w-12 h-12 bg-[#FEF2F2] rounded-[6px] flex items-center justify-center">
+                      <Image
+                        src={edu.logoUrl}
+                        alt={`${edu.institution} logo`}
+                        width={24}
+                        height={24}
+                        className="rounded-sm"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-[15px] font-medium text-blue-950 mb-1">
+                        {edu.institution}
+                      </h3>
+                      <p className="text-[13px] text-[#64748B] mb-1">
+                        {edu.degree}
+                      </p>
+                      <p className="text-[13px] text-[#94A3B8]">{edu.period}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        <div
+          id="experience"
+          className="border border-[#E2E8F0] rounded-lg p-6 mb-8"
+        >
+          {isLoading ? (
+            <ExperienceSkeleton />
+          ) : (
+            <>
+              <h2 className="text-[15px] font-medium text-blue-950 mb-6">
+                Experience
+              </h2>
+              {profileData.experience.map((exp, index) => (
+                <div key={index} className="flex gap-4">
+                  <div className="w-12 h-12 bg-white rounded-[6px] border border-[#E2E8F0] flex items-center justify-center">
+                    <Image
+                      src={exp.logoUrl}
+                      alt={`${exp.company} logo`}
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-[15px] font-medium text-blue-950 mb-1">
+                      {exp.company}
+                    </h3>
+                    <p className="text-[13px] text-[#64748B] mb-1">
+                      {exp.role}
+                    </p>
+                    <p className="text-[13px] text-[#94A3B8]">{exp.period}</p>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+
+        <div
+          id="documents"
+          className="border border-[#E2E8F0] rounded-lg p-4 sm:p-6 mb-8"
+        >
+          {isLoading ? (
+            <DocumentsSkeleton />
+          ) : (
+            <>
+              <h2 className="text-[15px] font-medium text-blue-950 mb-6">
+                Documents
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[1, 2].map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-4 p-4 bg-[#F8FAFC] rounded-[6px]"
+                  >
+                    <div className="w-10 h-10 bg-white rounded-[6px] flex items-center justify-center shadow-sm">
+                      <svg
+                        className="w-5 h-5 text-[#64748B]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-[13px] font-medium text-blue-950 mb-0.5">
+                        HannahBusing_Resume.pdf
+                      </p>
+                      <p className="text-[13px] text-[#94A3B8]">200 KB</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        <div id="reviews" className="border border-[#E2E8F0] rounded-lg p-6">
+          {isLoading ? (
+            <FeedbackSkeleton />
+          ) : (
+            <Suspense fallback={<FeedbackSkeleton />}>
+              <StudentFeedback />
+            </Suspense>
+          )}
+        </div>
+        <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
+          <DialogContent className="max-w-2xl p-0">
+            <BookingForm />
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 }
