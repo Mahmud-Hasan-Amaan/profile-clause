@@ -1,46 +1,10 @@
 import { Star } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
+import { profileData } from "@/app/data/json";
 
 export default function StudentFeedback() {
-  const reviews = [
-    {
-      id: 1,
-      name: "Alice Johnson",
-      avatar: "/placeholder.svg?height=40&width=40",
-      rating: 5,
-      date: "2 days ago",
-      comment:
-        "Excellent tutor! Very knowledgeable and patient. Helped me understand complex topics easily.",
-    },
-    {
-      id: 2,
-      name: "Bob Smith",
-      avatar: "/placeholder.svg?height=40&width=40",
-      rating: 4,
-      date: "1 week ago",
-      comment:
-        "Great session! The tutor was well-prepared and provided valuable insights.",
-    },
-    {
-      id: 3,
-      name: "Carol Davis",
-      avatar: "/placeholder.svg?height=40&width=40",
-      rating: 5,
-      date: "2 weeks ago",
-      comment:
-        "Fantastic experience! The tutor's teaching style is very effective and engaging.",
-    },
-    {
-      id: 4,
-      name: "David Wilson",
-      avatar: "/placeholder.svg?height=40&width=40",
-      rating: 4,
-      date: "3 weeks ago",
-      comment:
-        "Very helpful session. The tutor clarified all my doubts and provided additional resources.",
-    },
-  ];
+  const { reviews } = profileData;
 
   return (
     <div className="w-full max-w-6xl mx-auto p-2 sm:p-4">
@@ -49,7 +13,9 @@ export default function StudentFeedback() {
           <h2 className="text-lg sm:text-xl font-semibold font-clash">
             Student Feedback
           </h2>
-          <span className="text-xs sm:text-sm text-gray-500">(32 reviews)</span>
+          <span className="text-xs sm:text-sm text-gray-500">
+            ({reviews.length} reviews)
+          </span>
         </div>
         <button className="text-xs sm:text-sm text-blue-600 hover:text-blue-800">
           View All

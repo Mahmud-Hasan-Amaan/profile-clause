@@ -1,4 +1,13 @@
 // First, let's create types for our data
+export interface Review {
+  id: number;
+  name: string;
+  avatar: string;
+  rating: number;
+  date: string;
+  comment: string;
+}
+
 export interface Profile {
   name: string;
   role: string;
@@ -13,33 +22,27 @@ export interface Profile {
     responseTime: string;
     status: "online" | "offline";
   };
-  personalInfo: {
-    email: string;
-    location: string;
-    dateOfBirth: string;
-    gender: string;
-  };
+  available: string;
   bio: string;
-  services: Array<{
-    icon: string;
-    title: string;
-    description: string;
-    price: string;
-  }>;
-  education: Array<{
+  education: {
     institution: string;
     degree: string;
     period: string;
     logoUrl: string;
-  }>;
-  experience: Array<{
+  }[];
+  experience: {
     company: string;
     role: string;
     period: string;
     logoUrl: string;
-  }>;
-  documents: Array<{
-    name: string;
-    size: string;
-  }>;
+  }[];
+  services: {
+    title: string;
+    price: string;
+    description: string;
+    iconBg: string;
+    iconType: "fileText" | "clock" | "phone";
+    iconColor?: string;
+  }[];
+  reviews: Review[];
 }

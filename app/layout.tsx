@@ -36,10 +36,32 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${clash.variable} antialiased bg-gray-200 font-sans`}>
-        <main className="min-h-screen max-w-[1400px] mx-auto my-2 bg-white rounded-lg shadow-sm pb-8">
+        <main className="min-h-screen max-w-[1400px] mx-auto my-2 bg-white rounded-lg shadow-sm pb-12 pt-7">
           {children}
         </main>
       </body>
     </html>
   );
 }
+
+// There shouldn't be any unnecessary or unused code or file in your repository.
+
+// no duplication files
+
+// Skeleton loading time komaite hobe. Too much artificial delay. And use Shadcn skeleton components.
+
+// skeleton shon gulo 1 file e thakbe. 1 single component er Vitor. Not in different components
+
+// shon gulo section er different components thakbe. And page.tsx e just shib gulo components ekotro kora hobe. ( component composting. And single responsibilities principles for nextjs website)
+
+// over and over documents section remove korte bolsilam. It's still there
+
+// design improve korte hobe, and use lucide react Library for icons.
+
+// Icons size, border colors, shadows, text sizes, and responsiveness. All should follow design 100%
+
+// don't use a library for scrolling to specific section. Use documents local apis, like ".scrollTo"
+
+// every single data displaying on the components should from json object. There's still some static texts written in the page.
+
+// shouldn't use any links, use images from public directory.

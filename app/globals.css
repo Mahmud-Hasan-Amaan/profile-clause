@@ -80,3 +80,14 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
+
+@layer base {
+  .animate-pulse {
+    animation-duration: 0.8s; /* Reduced from 1.2s for snappier pulsing */
+  }
+}
+
+/* Add this for smoother skeleton transitions */
+.skeleton-fade {
+  transition: opacity 0.2s ease-in-out;
+}

@@ -14,8 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
 import { useState, useEffect } from "react";
-import BookingSkeleton from "./booking-skeleton";
 import { DialogClose } from "@/components/ui/dialog";
+import { BookingSkeleton } from "./skeletons";
 
 export default function BookingForm() {
   const [isLoading, setIsLoading] = useState(true);
