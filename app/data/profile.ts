@@ -12,9 +12,9 @@ export const profileData: Profile = {
       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Palestine.svg/800px-Flag_of_Palestine.svg.png",
   },
   availability: {
+    status: "online",
     nextAvailable: "Tuesday at 22:30 GMT +5",
     responseTime: "15 mins",
-    status: "online",
   },
   personalInfo: {
     email: "check@check.com",

@@ -17,7 +17,6 @@ import ServicesSkeleton from "./components/services-skeleton";
 import OverviewSkeleton from "../components/overview-skeleton";
 import EducationSkeleton from "../components/education-skeleton";
 import ExperienceSkeleton from "../components/experience-skeleton";
-import DocumentsSkeleton from "../components/documents-skeleton";
 
 export default function ProfilePage() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -38,9 +37,9 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-      <div className="sticky top-0 bg-white z-10 pt-4">
-        <button className="flex items-center gap-1.5 text-[13px] mb-8 text-[#64748B]">
+    <div className="max-w-[1200px] mx-auto px-3 sm:px-4">
+      <div className="sticky top-0 bg-white z-10 pt-2">
+        <button className="flex items-center gap-1.5 text-[13px] mb-6 text-[#64748B]">
           <ChevronLeft className="w-4 h-4" />
           Back
         </button>
@@ -93,13 +92,14 @@ export default function ProfilePage() {
               <div className="flex items-center gap-2">
                 <div className="flex-1">
                   <h3 className="text-[13px] md:text-sm font-medium leading-none mb-1 text-blue-950">
-                    Available Tuesday at 22:30 GMT +5
+                    {profileData.availability.nextAvailable}
                   </h3>
-                  <p className="text-[12px] md:text-sm text-muted-foreground ">
-                    Usually responds within 15 mins
+                  <p className="text-[12px] md:text-sm text-muted-foreground">
+                    Usually responds within{" "}
+                    {profileData.availability.responseTime}
                   </p>
                 </div>
-                <div className="h-2 w-2 rounded-full bg-green-500" />
+                <div className="h-4 w-4 rounded-full bg-green-500" />
               </div>
               <div className="flex gap-2">
                 <Button
@@ -139,10 +139,10 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className="pt-4">
+      <div className="pt-2">
         <div
           id="overview"
-          className="border border-[#E2E8F0] rounded-lg p-6 mb-8"
+          className="border border-[#E2E8F0] rounded-lg p-4 mb-6"
         >
           {isLoading ? (
             <OverviewSkeleton />
@@ -165,7 +165,7 @@ export default function ProfilePage() {
 
         <div
           id="services"
-          className="border border-[#E2E8F0] rounded-lg p-4 sm:p-6 mb-8"
+          className="border border-[#E2E8F0] rounded-lg p-3 sm:p-4 mb-6"
         >
           <h2 className="text-[15px] font-medium text-blue-950 mb-6">
             Services
@@ -239,7 +239,7 @@ export default function ProfilePage() {
 
         <div
           id="education"
-          className="border border-[#E2E8F0] rounded-lg p-6 mb-8"
+          className="border border-[#E2E8F0] rounded-lg p-4 mb-6"
         >
           {isLoading ? (
             <EducationSkeleton />
@@ -264,10 +264,10 @@ export default function ProfilePage() {
                       />
                     </div>
                     <div>
-                      <h3 className="text-[15px] font-medium text-blue-950 mb-1">
+                      <h3 className="text-[17px] font-medium text-blue-950 mb-3">
                         {edu.institution}
                       </h3>
-                      <p className="text-[13px] text-[#64748B] mb-1">
+                      <p className="text-[14px] text-[#64748B] mb-3">
                         {edu.degree}
                       </p>
                       <p className="text-[13px] text-[#94A3B8]">{edu.period}</p>
@@ -281,7 +281,7 @@ export default function ProfilePage() {
 
         <div
           id="experience"
-          className="border border-[#E2E8F0] rounded-lg p-6 mb-8"
+          className="border border-[#E2E8F0] rounded-lg p-4 mb-6"
         >
           {isLoading ? (
             <ExperienceSkeleton />
@@ -301,10 +301,10 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <h3 className="text-[15px] font-medium text-blue-950 mb-1">
+                    <h3 className="text-[15px] font-medium text-blue-950 mb-2">
                       {exp.company}
                     </h3>
-                    <p className="text-[13px] text-[#64748B] mb-1">
+                    <p className="text-[13px] text-[#64748B] mb-2">
                       {exp.role}
                     </p>
                     <p className="text-[13px] text-[#94A3B8]">{exp.period}</p>
@@ -315,52 +315,7 @@ export default function ProfilePage() {
           )}
         </div>
 
-        <div
-          id="documents"
-          className="border border-[#E2E8F0] rounded-lg p-4 sm:p-6 mb-8"
-        >
-          {isLoading ? (
-            <DocumentsSkeleton />
-          ) : (
-            <>
-              <h2 className="text-[15px] font-medium text-blue-950 mb-6">
-                Documents
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[1, 2].map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-center gap-4 p-4 bg-[#F8FAFC] rounded-[6px]"
-                  >
-                    <div className="w-10 h-10 bg-white rounded-[6px] flex items-center justify-center shadow-sm">
-                      <svg
-                        className="w-5 h-5 text-[#64748B]"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-[13px] font-medium text-blue-950 mb-0.5">
-                        HannahBusing_Resume.pdf
-                      </p>
-                      <p className="text-[13px] text-[#94A3B8]">200 KB</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-
-        <div id="reviews" className="border border-[#E2E8F0] rounded-lg p-6">
+        <div id="reviews" className="border border-[#E2E8F0] rounded-lg p-4">
           {isLoading ? (
             <FeedbackSkeleton />
           ) : (
@@ -370,7 +325,7 @@ export default function ProfilePage() {
           )}
         </div>
         <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
-          <DialogContent className="max-w-2xl p-0">
+          <DialogContent className="max-w-2xl p-0" title="Book Service">
             <BookingForm />
           </DialogContent>
         </Dialog>

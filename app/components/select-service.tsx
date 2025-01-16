@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
 import { useState, useEffect } from "react";
 import BookingSkeleton from "./booking-skeleton";
+import { DialogClose } from "@/components/ui/dialog";
 
 export default function BookingForm() {
   const [isLoading, setIsLoading] = useState(true);
@@ -143,9 +144,9 @@ export default function BookingForm() {
             </div>
 
             <div className="grid grid-cols-7 gap-1 text-center text-sm">
-              {["M", "T", "W", "T", "F", "S", "S"].map((day) => (
+              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
                 <div key={day} className="py-2 text-gray-400 font-medium">
-                  {day}
+                  {day.charAt(0)}
                 </div>
               ))}
               {days.map((day) => (
@@ -205,8 +206,12 @@ export default function BookingForm() {
         {/* Navigation */}
         <div className="flex justify-between pt-6">
           <button
-            onClick={() => setStep(step - 1)}
-            className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+            onClick={() => setStep(Math.max(1, step - 1))}
+            disabled={step === 1}
+            className={cn(
+              "flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg",
+              step === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"
+            )}
           >
             <ChevronLeft className="w-4 h-4 mr-1" /> Back
           </button>
@@ -220,12 +225,20 @@ export default function BookingForm() {
                 Close
               </button>
             )}
-            <button
-              onClick={() => setStep(step + 1)}
-              className="flex items-center px-4 py-2 text-sm font-medium text-white bg-[#0F1C2D] rounded-lg hover:bg-[#0F1C2D]/90"
-            >
-              Continue <ChevronRight className="w-4 h-4 ml-1" />
-            </button>
+            {step === 3 ? (
+              <DialogClose asChild>
+                <button className="flex items-center px-4 py-2 text-sm font-medium text-white bg-[#0F1C2D] rounded-lg hover:bg-[#0F1C2D]/90">
+                  Complete Booking <ChevronRight className="w-4 h-4 ml-1" />
+                </button>
+              </DialogClose>
+            ) : (
+              <button
+                onClick={() => setStep(Math.min(3, step + 1))}
+                className="flex items-center px-4 py-2 text-sm font-medium text-white bg-[#0F1C2D] rounded-lg hover:bg-[#0F1C2D]/90"
+              >
+                Continue <ChevronRight className="w-4 h-4 ml-1" />
+              </button>
+            )}
           </div>
         </div>
       </div>
