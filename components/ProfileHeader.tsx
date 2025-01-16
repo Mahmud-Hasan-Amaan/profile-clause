@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Profile } from "../types/types";
+import { Profile } from "@/app/types/types";
 import { ProfileSkeleton } from "./skeletons";
-import { NavigationTabs } from "../components/NavigationTabs";
+import { NavigationTabs } from "./NavigationTabs";
 import { ArrowLeft } from "lucide-react";
 
 interface ProfileHeaderProps {
@@ -20,8 +20,8 @@ export function ProfileHeader({
 
   return (
     <div className="sticky top-0 bg-white z-20 pt-2 sticky-header">
-      <button className="flex items-center gap-1.5 text-[13px] mb-6 font-bold text-blue-950">
-        <ArrowLeft className="w-6 h-6 mr-1 font-bold" />
+      <button className="flex items-center gap-1.5 text-[16px] mb-6 font-medium font-clash text-blue-950">
+        <ArrowLeft className="w-6 h-6 mr-1 font-medium" />
         Back
       </button>
 
@@ -31,9 +31,9 @@ export function ProfileHeader({
             <Image
               src={profileData.avatar}
               alt="Profile picture"
-              width={120}
-              height={120}
-              className="rounded-full w-full h-auto"
+              width={125}
+              height={125}
+              className="rounded-full w-full h-auto border-4 border-gray-50"
             />
             {profileData.availability.status === "online" && (
               <div className="absolute bottom-0 right-0 w-6 h-6 md:w-8 md:h-8 border-2 border-white rounded-full bg-[#22C55E]" />
@@ -42,7 +42,7 @@ export function ProfileHeader({
 
           <div className="flex-shrink">
             <div className="flex items-center gap-2 mb-2">
-              <h1 className="text-[15px] md:text-[17px] font-medium text-blue-950 truncate">
+              <h1 className="text-[15px] md:text-[22px] font-medium text-blue-950 truncate">
                 {profileData.name}
               </h1>
               <Image
@@ -53,10 +53,10 @@ export function ProfileHeader({
                 className="rounded-sm flex-shrink-0"
               />
             </div>
-            <p className="text-[12px] md:text-[20x] text-black mb-2">
+            <p className="text-[13px] md:text-[20x] text-black mb-2">
               {profileData.available}
             </p>
-            <p className="text-[12px] md:text-[13px] text-[#94A3B8]">
+            <p className="text-[12px] md:text-[13px] text-[#565f69]">
               {profileData.role} @ {profileData.company}
             </p>
           </div>
@@ -72,12 +72,12 @@ export function ProfileHeader({
                 Usually responds within {profileData.availability.responseTime}
               </p>
             </div>
-            <div className="h-4 w-4 rounded-full bg-green-500" />
+            <div className="h-6 w-6 rounded-full bg-[#22C55E] border-4 border-green-200" />
           </div>
           <div className="flex gap-2">
             <Button
               variant="outline"
-              className="flex-1 h-8 md:h-9 text-[12px] md:text-[13px]"
+              className="flex-1 h-8 md:h-9 text-[12px] md:text-[13px] bg-gray-100 hover:bg-gray-200"
             >
               Message
             </Button>

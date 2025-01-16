@@ -1,4 +1,37 @@
+import React, { useState, useEffect } from "react";
+
 export function NavigationTabs() {
+  const [activeSection, setActiveSection] = useState("overview");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = [
+        "overview",
+        "services",
+        "education",
+        "experience",
+        "reviews",
+      ];
+      const header = document.querySelector(".sticky-header");
+      const headerOffset = header?.clientHeight || 0;
+
+      // Find the section that is currently in view
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= headerOffset + 100 && rect.bottom >= headerOffset) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const smoothScroll = (targetPosition: number, duration: number = 1000) => {
     const startPosition = window.pageYOffset;
     const distance = targetPosition - startPosition;
@@ -45,12 +78,12 @@ export function NavigationTabs() {
           { name: "Education", id: "education" },
           { name: "Experience", id: "experience" },
           { name: "Reviews", id: "reviews" },
-        ].map((item, index) => (
+        ].map((item) => (
           <button
             key={item.name}
             onClick={() => handleScroll(item.id)}
             className={`px-4 py-2.5 text-[13px] ${
-              index === 0
+              item.id === activeSection
                 ? "text-[#0F172A] border-b-2 border-[#0F172A] font-medium"
                 : "text-[#64748B] hover:text-[#0F172A]"
             }`}

@@ -10,14 +10,16 @@ export default function StudentFeedback() {
     <div className="w-full max-w-6xl mx-auto p-2 sm:p-4">
       <div className="flex justify-between items-center mb-4 sm:mb-6">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg sm:text-xl font-semibold font-clash">
+          <h2 className="text-lg sm:text-xl font-medium font-clash">
             Student Feedback
           </h2>
-          <span className="text-xs sm:text-sm text-gray-500">
-            ({reviews.length} reviews)
+          <span className="text-xs sm:text-sm text-gray-500 flex items-center gap-1">
+            (
+            <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400" />
+            {reviews.length} reviews )
           </span>
         </div>
-        <button className="text-xs sm:text-sm text-blue-600 hover:text-blue-800">
+        <button className="text-xs sm:text-sm font-medium font-clash hover:text-blue-800">
           View All
         </button>
       </div>
@@ -36,23 +38,32 @@ export default function StudentFeedback() {
               <div className="flex-1">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-sm sm:text-base font-semibold font-clash">
+                    <h3 className="text-sm sm:text-base font-clash font-medium ">
                       {review.name}
                     </h3>
                     <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-3 h-3 sm:w-4 sm:h-4 ${
-                            i < review.rating
-                              ? "text-yellow-400 fill-yellow-400"
-                              : "text-gray-300"
-                          }`}
-                        />
-                      ))}
+                      <span className="text-xs sm:text-sm font-medium font-clash mr-2">
+                        {review.rating}
+                      </span>
+                      {[...Array(5)].map((_, i) => {
+                        const difference = review.rating - i;
+
+                        return (
+                          <Star
+                            key={i}
+                            className={`w-3 h-3 sm:w-4 sm:h-4 ${
+                              difference >= 1
+                                ? "text-yellow-400 fill-yellow-400"
+                                : difference > 0
+                                ? "text-yellow-400 fill-yellow-400 [clip-path:inset(0_50%_0_0)]"
+                                : "text-gray-300"
+                            }`}
+                          />
+                        );
+                      })}
                     </div>
                   </div>
-                  <span className="text-xs sm:text-sm text-gray-500">
+                  <span className="text-xs sm:text-sm font-medium font-clash">
                     {review.date}
                   </span>
                 </div>

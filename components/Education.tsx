@@ -1,5 +1,5 @@
 import { EducationSkeleton } from "./skeletons";
-import { Profile } from "../types/types";
+import { Profile } from "@/app/types/types";
 import Image from "next/image";
 
 interface EducationProps {
@@ -17,7 +17,11 @@ export function Education({ isLoading, profileData }: EducationProps) {
         {profileData.education.map((edu, index) => (
           <div
             key={index}
-            className="flex gap-4 border-b border-[#E2E8F0] pb-4"
+            className={`flex gap-4 ${
+              index !== profileData.education.length - 1
+                ? "flex gap-4 mb-6 border-b border-[#E2E8F0] pb-4"
+                : "pb-4"
+            }`}
           >
             <div className="w-12 h-12 bg-white border border-[#E2E8F0] rounded-full flex items-center justify-center">
               <Image

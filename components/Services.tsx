@@ -1,7 +1,7 @@
 import { ServicesSkeleton } from "./skeletons";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Profile } from "../types/types";
+import { Profile } from "@/app/types/types";
 import { FileText, Clock, Phone } from "lucide-react";
 
 interface ServicesProps {
@@ -47,11 +47,14 @@ export function Services({
                   <div className="text-2xl font-medium">{service.price}</div>
                 </div>
                 <div className="flex gap-4">
-                  <Button variant="outline" className="flex-1 rounded-full">
+                  <Button
+                    variant="outline"
+                    className="flex-1 border-[1px] border-solid border-blue-950 rounded-lg"
+                  >
                     View Packages
                   </Button>
                   <Button
-                    className="flex-1 rounded-full bg-blue-950 hover:bg-blue-950/90"
+                    className="flex-1 bg-blue-950 hover:bg-blue-950/90"
                     onClick={() => setIsBookingOpen(true)}
                   >
                     Select Service

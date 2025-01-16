@@ -3,13 +3,13 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { profileData } from "./data/json";
-import { ProfileHeader } from "./components/ProfileHeader";
-import { Overview } from "./components/Overview";
-import { Services } from "./components/Services";
-import { Education } from "./components/Education";
-import { Experience } from "./components/Experience";
-import { Reviews } from "./components/Reviews";
-import BookingForm from "./components/select-service";
+import { ProfileHeader } from "@/components/ProfileHeader";
+import { Overview } from "@/components/Overview";
+import { Services } from "@/components/Services";
+import { Education } from "@/components/Education";
+import { Experience } from "@/components/Experience";
+import { Reviews } from "@/components/Reviews";
+import BookingForm from "@/components/select-service";
 
 export default function ProfilePage() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);

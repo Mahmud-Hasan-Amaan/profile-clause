@@ -1,5 +1,5 @@
 import { ExperienceSkeleton } from "./skeletons";
-import { Profile } from "../types/types";
+import { Profile } from "@/app/types/types";
 import Image from "next/image";
 
 interface ExperienceProps {
@@ -17,7 +17,14 @@ export function Experience({ isLoading, profileData }: ExperienceProps) {
     >
       <h2 className="text-[15px] font-medium text-blue-950 mb-6">Experience</h2>
       {profileData.experience.map((exp, index) => (
-        <div key={index} className="flex gap-4">
+        <div
+          key={index}
+          className={`flex gap-4 ${
+            index !== profileData.experience.length - 1
+              ? "mb-6 border-b border-[#E2E8F0] pb-4"
+              : " mb-4"
+          }`}
+        >
           <div className="w-12 h-12 bg-white rounded-full border border-[#E2E8F0] flex items-center justify-center">
             <Image
               src={exp.logoUrl}

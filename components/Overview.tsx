@@ -1,5 +1,5 @@
 import { OverviewSkeleton } from "./skeletons";
-import { Profile } from "../types/types";
+import { Profile } from "@/app/types/types";
 
 interface OverviewProps {
   isLoading: boolean;
@@ -18,7 +18,7 @@ export function Overview({ isLoading, profileData }: OverviewProps) {
       <p className="text-[13px] text-[#64748B] mb-2 leading-[1.6]">
         {profileData.bio}
       </p>
-      <button className="text-[13px] text-[#2563EB] hover:text-[#1D4ED8]">
+      <button className="text-[13px] text-blue-950 hover:text-[#1D4ED8] leading-[1.6] font-medium">
         Read more
       </button>
     </div>

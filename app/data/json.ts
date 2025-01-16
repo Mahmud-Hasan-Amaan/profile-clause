@@ -14,8 +14,8 @@ export const profileData: Profile = {
     responseTime: "2 hours",
     status: "online" as const,
   },
-  available: "Available today",
-  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+  available: "Our team will review your application and get back",
+  bio: "Our team will review your application and get back to you within 1-3 business days. If approved, you&apos;ll gain access to your dashboard",
   education: [
     {
       institution: "MIT",
@@ -34,6 +34,18 @@ export const profileData: Profile = {
   experience: [
     {
       company: "Science Club",
+      role: "Senior Developer",
+      period: "2022-Present",
+      logoUrl: "/images/ded-club.jpg",
+    },
+    {
+      company: "It Club",
+      role: "Senior Developer",
+      period: "2022-Present",
+      logoUrl: "/images/ded-club.jpg",
+    },
+    {
+      company: "Ded Club",
       role: "Senior Developer",
       period: "2022-Present",
       logoUrl: "/images/ded-club.jpg",
@@ -71,7 +83,7 @@ export const profileData: Profile = {
       id: 1,
       name: "Modi",
       avatar: "/images/modi-happy.jpg",
-      rating: 5,
+      rating: 4.5,
       date: "2 days ago",
       comment:
         "Excellent tutor! Very knowledgeable and patient. Helped me understand complex topics easily.",
@@ -102,6 +114,33 @@ export const profileData: Profile = {
       date: "3 weeks ago",
       comment:
         "Very helpful session. The tutor clarified all my doubts and provided additional resources.",
+    },
+    {
+      id: 5,
+      name: "Rafim Tahsin",
+      avatar: "/images/rafim-tahsin.png",
+      rating: 4,
+      date: "3 weeks ago",
+      comment:
+        "Very helpful session. The tutor clarified all my doubts and provided additional resources.",
+    },
+    {
+      id: 6,
+      name: "Rafim Tahsin",
+      avatar: "/images/rafim-tahsin.png",
+      rating: 4,
+      date: "3 weeks ago",
+      comment:
+        "Very helpful session. The tutor clarified all my doubts and provided additional resources.",
+    },
+    {
+      id: 7,
+      name: "Sheikh Hasina",
+      avatar: "/images/hasina-happy.jpg",
+      rating: 5,
+      date: "2 weeks ago",
+      comment:
+        "Fantastic experience! The tutor's teaching style is very effective and engaging.",
     },
   ],
 } as const;

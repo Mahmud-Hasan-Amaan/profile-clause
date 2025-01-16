@@ -16,36 +16,84 @@ import { Upload } from "lucide-react";
 import { useState, useEffect } from "react";
 import { DialogClose } from "@/components/ui/dialog";
 import { BookingSkeleton } from "./skeletons";
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  addMonths,
+  subMonths,
+} from "date-fns";
+import { profileData } from "@/app/data/json";
 
 export default function BookingForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [step, setStep] = React.useState(1);
-  const [selectedDate, setSelectedDate] = React.useState(4);
-  const [selectedTime, setSelectedTime] = React.useState("15:00");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [selectedTime, setSelectedTime] = useState<string | null>(() => {
+    const now = new Date();
+    const minutes = Math.floor(now.getMinutes() / 30) * 30;
+    return `${now.getHours().toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}`;
+  });
+  const [timeBlockStart, setTimeBlockStart] = useState(() => {
+    const currentHour = new Date().getHours();
+    return Math.floor(currentHour / 6) * 6;
+  });
+  const [timeBlockEnd, setTimeBlockEnd] = useState(() => {
+    const currentHour = new Date().getHours();
+    return Math.min(24, Math.floor(currentHour / 6) * 6 + 6);
+  });
+  const [selectedService, setSelectedService] = useState<string>("");
 
-  const timeSlots = [
-    "09:00",
-    "09:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "12:00",
-    "12:30",
-    "15:00",
-    "15:30",
-    "16:00",
-    "16:30",
-    "18:00",
-    "18:30",
-    "19:00",
-    "19:30",
-  ];
+  const getDaysInMonth = () => {
+    const start = startOfMonth(currentDate);
+    const end = endOfMonth(currentDate);
+    return eachDayOfInterval({ start, end });
+  };
 
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const previousMonth = () => setCurrentDate(subMonths(currentDate, 1));
+  const nextMonth = () => setCurrentDate(addMonths(currentDate, 1));
+
+  const previousTimeBlock = () => {
+    setTimeBlockStart(Math.max(0, timeBlockStart - 6));
+    setTimeBlockEnd(Math.max(6, timeBlockEnd - 6));
+  };
+
+  const nextTimeBlock = () => {
+    setTimeBlockStart(Math.min(18, timeBlockStart + 6));
+    setTimeBlockEnd(Math.min(24, timeBlockEnd + 6));
+  };
+
+  const generateTimeSlots = () => {
+    const slots = [];
+    const startTime = timeBlockStart;
+    const endTime = timeBlockEnd;
+    const interval = 30;
+
+    for (let hour = startTime; hour < endTime; hour++) {
+      for (let minute = 0; minute < 60; minute += interval) {
+        const timeString = `${hour.toString().padStart(2, "0")}:${minute
+          .toString()
+          .padStart(2, "0")}`;
+        slots.push(timeString);
+      }
+    }
+    return slots;
+  };
+
+  const isToday = (date: Date) => {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
 
   useEffect(() => {
-    // Simulate loading
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
@@ -56,7 +104,6 @@ export default function BookingForm() {
   return (
     <div className="w-full max-w-2xl mx-auto bg-white p-6">
       <div className="space-y-6">
-        {/* Header */}
         <div className="flex justify-between items-center pb-2">
           <div className="space-y-1">
             <h2 className="text-xl font-medium text-[#111827] font-clash">
@@ -69,7 +116,6 @@ export default function BookingForm() {
           <span className="text-sm text-gray-500">Step {step}/3</span>
         </div>
 
-        {/* Step 1: Service Selection */}
         {step === 1 && (
           <div className="space-y-6">
             <div className="space-y-2">
@@ -86,16 +132,22 @@ export default function BookingForm() {
                 <label className="text-sm font-medium font-clash">
                   Select Service <span className="text-red-500">*</span>
                 </label>
-                <Select>
+                <Select
+                  onValueChange={setSelectedService}
+                  value={selectedService}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a service" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="essay">Essay review</SelectItem>
-                    <SelectItem value="session">1 hour sessions</SelectItem>
-                    <SelectItem value="call">
-                      15 mins Introductory Call
-                    </SelectItem>
+                    {profileData.services.map((service) => (
+                      <SelectItem
+                        key={service.title}
+                        value={service.title.toLowerCase()}
+                      >
+                        {service.title}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -126,74 +178,100 @@ export default function BookingForm() {
           </div>
         )}
 
-        {/* Calendar View - Step 2 */}
         {step === 2 && (
           <div className="space-y-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium text-gray-900">
-                December 2024
+                {format(currentDate, "MMMM yyyy")}
               </h3>
               <div className="flex gap-2">
-                <button className="p-2 hover:bg-gray-100 rounded-full">
+                <button
+                  onClick={previousMonth}
+                  className="p-2 hover:bg-gray-100 rounded-full"
+                >
                   <ChevronLeft className="h-5 w-5 text-gray-600" />
                 </button>
-                <button className="p-2 hover:bg-gray-100 rounded-full">
+                <button
+                  onClick={nextMonth}
+                  className="p-2 hover:bg-gray-100 rounded-full"
+                >
                   <ChevronRight className="h-5 w-5 text-gray-600" />
                 </button>
               </div>
             </div>
 
             <div className="grid grid-cols-7 gap-1 text-center text-sm">
-              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
                 <div key={day} className="py-2 text-gray-400 font-medium">
                   {day.charAt(0)}
                 </div>
               ))}
-              {days.map((day) => (
+              {getDaysInMonth().map((day) => (
                 <button
-                  key={day}
+                  key={day.toString()}
                   onClick={() => setSelectedDate(day)}
                   className={cn(
                     "py-2 rounded-md text-sm font-medium",
-                    selectedDate === day
+                    isToday(day) &&
+                      !selectedDate &&
+                      "ring-2 ring-[#8B141A] ring-offset-2",
+                    selectedDate &&
+                      format(selectedDate, "yyyy-MM-dd") ===
+                        format(day, "yyyy-MM-dd")
                       ? "bg-[#8B141A] text-white"
-                      : "hover:bg-gray-100 text-gray-900"
+                      : "hover:bg-gray-100 text-gray-900",
+                    isToday(day) && "font-bold"
                   )}
                 >
-                  {day}
+                  {format(day, "d")}
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        {/* Time Slots - Step 3 */}
         {step === 3 && (
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium text-gray-700">
-                Available time slots
+                Available time slots ({timeBlockStart}:00 - {timeBlockEnd}:00)
               </h3>
               <div className="flex gap-2">
-                <button className="p-2 hover:bg-gray-100 rounded-full">
+                <button
+                  onClick={previousTimeBlock}
+                  disabled={timeBlockStart === 0}
+                  className={cn(
+                    "p-2 hover:bg-gray-100 rounded-full",
+                    timeBlockStart === 0 && "opacity-50 cursor-not-allowed"
+                  )}
+                >
                   <ChevronLeft className="h-5 w-5 text-gray-600" />
                 </button>
-                <button className="p-2 hover:bg-gray-100 rounded-full">
+                <button
+                  onClick={nextTimeBlock}
+                  disabled={timeBlockEnd === 24}
+                  className={cn(
+                    "p-2 hover:bg-gray-100 rounded-full",
+                    timeBlockEnd === 24 && "opacity-50 cursor-not-allowed"
+                  )}
+                >
                   <ChevronRight className="h-5 w-5 text-gray-600" />
                 </button>
               </div>
             </div>
 
             <div className="grid grid-cols-4 gap-4">
-              {timeSlots.map((time) => (
+              {generateTimeSlots().map((time) => (
                 <button
                   key={time}
                   onClick={() => setSelectedTime(time)}
                   className={cn(
                     "py-3 px-4 rounded-lg text-sm font-medium",
-                    selectedTime === time
+                    time === selectedTime
                       ? "bg-[#8B141A] text-white"
-                      : "bg-gray-50 hover:bg-gray-100 text-gray-900"
+                      : "bg-gray-50 hover:bg-gray-100 text-gray-900",
+                    time === selectedTime &&
+                      "ring-2 ring-[#8B141A] ring-offset-2"
                   )}
                 >
                   {time}
@@ -203,7 +281,6 @@ export default function BookingForm() {
           </div>
         )}
 
-        {/* Navigation */}
         <div className="flex justify-between pt-6">
           <button
             onClick={() => setStep(Math.max(1, step - 1))}
