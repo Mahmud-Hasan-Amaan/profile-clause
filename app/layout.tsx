@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${clash.variable} antialiased bg-gray-200 font-clash`}>
-        <main className="min-h-screen max-w-[1400px] mx-auto my-2 bg-white rounded-lg shadow-sm pb-12 pt-7">
+        <main className="min-h-screen max-w-[1420px] mx-auto my-1 bg-white rounded-lg shadow-sm pb-8 pt-5">
           {children}
         </main>
       </body>

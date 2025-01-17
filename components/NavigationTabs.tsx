@@ -70,7 +70,7 @@ export function NavigationTabs() {
   };
 
   return (
-    <div className="sticky top-[120px] bg-white z-10 border-b border-[#E2E8F0]">
+    <div className="sticky bg-white z-10 border-b border-[#E2E8F0]">
       <div className="flex overflow-x-auto hide-scrollbar">
         {[
           { name: "Overview", id: "overview" },
@@ -82,10 +82,10 @@ export function NavigationTabs() {
           <button
             key={item.name}
             onClick={() => handleScroll(item.id)}
-            className={`px-4 py-2.5 text-[13px] ${
+            className={`px-5 py-2.5 text-[13px] transition-all duration-300 ease-in-out ${
               item.id === activeSection
-                ? "text-[#0F172A] border-b-2 border-[#0F172A] font-medium"
-                : "text-[#64748B] hover:text-[#0F172A]"
+                ? "text-blue-950 border-b-2 border-blue-950 font-medium"
+                : "text-gray-500 hover:text-blue-950 font-medium"
             }`}
           >
             {item.name}

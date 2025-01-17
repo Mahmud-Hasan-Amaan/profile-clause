@@ -21,14 +21,14 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <div className="max-w-[1200px] mx-auto px-3 sm:px-4">
+    <div className="max-w-[1400px] mx-auto px-2 sm:px-4">
       <ProfileHeader
         profileData={profileData}
         isLoading={isLoading}
         setIsBookingOpen={setIsBookingOpen}
       />
 
-      <div className="pt-2">
+      <div className="pt-1">
         <Overview isLoading={isLoading} profileData={profileData} />
         <Services
           isLoading={isLoading}

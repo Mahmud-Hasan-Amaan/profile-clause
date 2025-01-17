@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -11,8 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Upload } from "lucide-react";
 import { useState, useEffect } from "react";
 import { DialogClose } from "@/components/ui/dialog";
 import { BookingSkeleton } from "./skeletons";
@@ -104,39 +102,39 @@ export default function BookingForm() {
   return (
     <div className="w-full max-w-2xl mx-auto bg-white p-6">
       <div className="space-y-6">
-        <div className="flex justify-between items-center pb-2">
+        <div className="flex justify-between items-center">
           <div className="space-y-1">
-            <h2 className="text-xl font-medium text-[#111827] font-clash">
-              {step === 2 ? "Select Date" : "Select available time"}
+            <h2 className="text-xl font-medium text-[#111827]">
+              {step === 1 ? "Select Service" : "Select available time"}
             </h2>
-            <p className="text-sm text-gray-500">
-              Please select your preferred date and time
-            </p>
+            {step !== 1 && (
+              <p className="text-sm text-gray-500">
+                Please select your preferred date and time
+              </p>
+            )}
           </div>
-          <span className="text-sm text-gray-500">Step {step}/3</span>
+          <span className="text-md text-gray-500">Step {step}/3</span>
         </div>
 
         {step === 1 && (
           <div className="space-y-6">
             <div className="space-y-2">
-              <h3 className="text-lg font-medium font-clash">
-                Provide Details
-              </h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="text-lg font-medium">Provide Details</h3>
+              <p className="text-sm text-gray-500">
                 Please provide your specific details below.
               </p>
             </div>
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium font-clash">
+                <label className="text-sm font-medium">
                   Select Service <span className="text-red-500">*</span>
                 </label>
                 <Select
                   onValueChange={setSelectedService}
                   value={selectedService}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-gray-50 border-0">
                     <SelectValue placeholder="Select a service" />
                   </SelectTrigger>
                   <SelectContent>
@@ -153,24 +151,20 @@ export default function BookingForm() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium font-clash">
+                <label className="text-sm font-medium">
                   Service Details <span className="text-red-500">*</span>
                 </label>
                 <Textarea
                   placeholder="Enter here..."
-                  className="min-h-[100px]"
+                  className="min-h-[100px] bg-gray-50 border-0 resize-none"
                 />
               </div>
 
-              <div className="border-2 border-dashed rounded-lg p-6 text-center">
-                <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
+              <div className="bg-gray-50 rounded-lg p-6 text-center">
                 <div className="mt-4">
-                  <Button variant="outline">Click to Upload</Button>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Or drag and drop
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    (Max file size: 25 MB)
+                  <p className="text-sm text-gray-600">Click to Upload</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Or drag and drop (Max file size: 25 MB)
                   </p>
                 </div>
               </div>
@@ -234,26 +228,20 @@ export default function BookingForm() {
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium text-gray-700">
-                Available time slots ({timeBlockStart}:00 - {timeBlockEnd}:00)
+                Available time slots
               </h3>
               <div className="flex gap-2">
                 <button
                   onClick={previousTimeBlock}
                   disabled={timeBlockStart === 0}
-                  className={cn(
-                    "p-2 hover:bg-gray-100 rounded-full",
-                    timeBlockStart === 0 && "opacity-50 cursor-not-allowed"
-                  )}
+                  className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
                 >
                   <ChevronLeft className="h-5 w-5 text-gray-600" />
                 </button>
                 <button
                   onClick={nextTimeBlock}
                   disabled={timeBlockEnd === 24}
-                  className={cn(
-                    "p-2 hover:bg-gray-100 rounded-full",
-                    timeBlockEnd === 24 && "opacity-50 cursor-not-allowed"
-                  )}
+                  className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
                 >
                   <ChevronRight className="h-5 w-5 text-gray-600" />
                 </button>
@@ -269,9 +257,7 @@ export default function BookingForm() {
                     "py-3 px-4 rounded-lg text-sm font-medium",
                     time === selectedTime
                       ? "bg-[#8B141A] text-white"
-                      : "bg-gray-50 hover:bg-gray-100 text-gray-900",
-                    time === selectedTime &&
-                      "ring-2 ring-[#8B141A] ring-offset-2"
+                      : "bg-gray-50 hover:bg-gray-100 text-gray-900"
                   )}
                 >
                   {time}
@@ -281,42 +267,37 @@ export default function BookingForm() {
           </div>
         )}
 
-        <div className="flex justify-between pt-6">
-          <button
-            onClick={() => setStep(Math.max(1, step - 1))}
-            disabled={step === 1}
-            className={cn(
-              "flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg",
-              step === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"
-            )}
-          >
-            <ChevronLeft className="w-4 h-4 mr-1" /> Back
-          </button>
-
-          <div className="flex gap-2">
-            {step === 2 && (
-              <button
-                onClick={() => window.history.back()}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Close
+        <div className="flex justify-end pt-6 space-x-3">
+          {step !== 2 && (
+            <button
+              onClick={() => setStep(Math.max(1, step - 1))}
+              disabled={step === 1}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100"
+            >
+              ← Back
+            </button>
+          )}
+          {step === 2 && (
+            <DialogClose asChild>
+              <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100">
+                Cancel <X className="w-4 h-4 ml-1.5 inline-block" />
               </button>
-            )}
-            {step === 3 ? (
-              <DialogClose asChild>
-                <button className="flex items-center px-4 py-2 text-sm font-medium text-white bg-[#0F1C2D] rounded-lg hover:bg-[#0F1C2D]/90">
-                  Complete Booking <ChevronRight className="w-4 h-4 ml-1" />
-                </button>
-              </DialogClose>
-            ) : (
-              <button
-                onClick={() => setStep(Math.min(3, step + 1))}
-                className="flex items-center px-4 py-2 text-sm font-medium text-white bg-[#0F1C2D] rounded-lg hover:bg-[#0F1C2D]/90"
-              >
-                Continue <ChevronRight className="w-4 h-4 ml-1" />
+            </DialogClose>
+          )}
+          {step === 3 ? (
+            <DialogClose asChild>
+              <button className="px-6 py-2 text-sm font-medium text-white bg-[#0F1C2D] rounded-lg hover:bg-[#0F1C2D]/90">
+                Continue →
               </button>
-            )}
-          </div>
+            </DialogClose>
+          ) : (
+            <button
+              onClick={() => setStep(Math.min(3, step + 1))}
+              className="px-6 py-2 text-sm font-medium text-white bg-[#0F1C2D] rounded-lg hover:bg-[#0F1C2D]/90"
+            >
+              Continue →
+            </button>
+          )}
         </div>
       </div>
     </div>

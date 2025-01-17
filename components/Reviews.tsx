@@ -10,7 +10,7 @@ export function Reviews({ isLoading }: ReviewsProps) {
   if (isLoading) return <FeedbackSkeleton />;
 
   return (
-    <div id="reviews" className="border border-[#E2E8F0] rounded-lg p-4">
+    <div id="reviews" className="border border-[#E2E8F0] rounded-lg p-4 w-full">
       <Suspense fallback={<FeedbackSkeleton />}>
         <StudentFeedback />
       </Suspense>
